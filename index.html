@@ -5,16 +5,23 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   <title>Get Me the Hell Out of Here</title>
 </head>
 
 <body>
   <header>
     <h1>Get Me the Hell Out of Here!</h1>
+    <a href="#explanation">How It Works</a>
+    <a href="#flights">Where You're Headed</a>
+    <a href="#credits">Credits</a>
   </header>
   <main>
-    <section>
-      <h2>How it Works:</h2>
+    <section id = "explanation">
+      <h2>How It Works:</h2>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates possimus blanditiis dicta, laudantium
         soluta cumque veritatis libero ratione,
         quae, doloribus adipisci consectetur aspernatur voluptatibus nulla omnis. Delectus illo adipisci possimus!</p>
@@ -24,7 +31,7 @@
         <input type="submit" value="Click here to go!"/>
       </form>
     </section>
-    <section>
+    <section id = "flights">
       <h2>Where you're headed:</h2>
       <div class="flight-info">
         <p class="location">You're headed to sunny <span id=location-name>[city]</span>!</p>
@@ -33,7 +40,7 @@
     </section>
   </main>
 
-  <footer>
+  <footer id = "credits">
     <h3>This website was created by:</h3>
     <ul>
       <li>Sarah Dickinson</li>
