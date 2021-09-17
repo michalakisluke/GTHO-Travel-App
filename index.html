@@ -5,10 +5,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="./assets/style.css" />
   <title>Get Me the Hell Out of Here</title>
 </head>
 
@@ -20,34 +22,39 @@
     <a href="#credits">Credits</a>
   </header>
   <main>
-    <section id = "explanation">
+    <section id="explanation">
       <h2>How It Works:</h2>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates possimus blanditiis dicta, laudantium
         soluta cumque veritatis libero ratione,
         quae, doloribus adipisci consectetur aspernatur voluptatibus nulla omnis. Delectus illo adipisci possimus!</p>
       <form>
         <label for="user-zip">Enter ZIP code:</label>
-        <input type="text" placeholder="Your ZIP code" id="user-zip" name="user-zip" />
-        <input type="submit" value="Click here to go!"/>
+        <input type="number" minlength="5" name="user-zip" id="user-zip" name="user-zip" />
+        <input type="submit" value="Click here to go!" />
       </form>
     </section>
-    <section id = "flights">
+    <section id="flights">
       <h2>Where you're headed:</h2>
       <div class="flight-info">
         <p class="location">You're headed to sunny <span id=location-name>[city]</span>!</p>
+        <p>The current temperature is <span>[temp]</span>°F</p>
         <button class="flight-link">Book my Flight</button>
       </div>
     </section>
   </main>
 
-  <footer id = "credits">
+  <footer id="credits">
     <h3>This website was created by:</h3>
     <ul>
-      <li>Sarah Dickinson</li>
-      <li>Luke Machalakis</li>
-      <li>Jacob Machlis</li>
+      <li>Sarah Dickinson <a href="">Github</a></li>
+      <li>Luke Machalakis <a href="">Github</a></li>
+      <li>Jacob Machlis <a href="">Github</a></li>
     </ul>
   </footer>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="./assets/script.js"></script>
 
 </body>
 
