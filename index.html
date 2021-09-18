@@ -2,59 +2,103 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-  <link rel="stylesheet" href="./assets/style.css" />
-  <title>Get Me the Hell Out of Here</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="./assets/style.css" />
+    <title>Get Me the Hell Out of Here</title>
 </head>
 
 <body>
-  <header>
-    <h1>Get Me the Hell Out of Here!</h1>
-    <a href="#explanation">How It Works</a>
-    <a href="#flights">Where You're Headed</a>
-    <a href="#credits">Credits</a>
-  </header>
-  <main>
-    <section id="explanation">
-      <h2>How It Works:</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates possimus blanditiis dicta, laudantium
-        soluta cumque veritatis libero ratione,
-        quae, doloribus adipisci consectetur aspernatur voluptatibus nulla omnis. Delectus illo adipisci possimus!</p>
-      <form>
-        <label for="user-zip">Enter ZIP code:</label>
-        <input type="number" minlength="5" name="user-zip" id="user-zip" name="user-zip" />
-        <input type="submit" value="Click here to go!" />
-      </form>
-    </section>
-    <section id="flights">
-      <h2>Where you're headed:</h2>
-      <div class="flight-info">
-        <p class="location">You're headed to sunny <span id=location-name>[city]</span>!</p>
-        <p>The current temperature is <span>[temp]</span>°F</p>
-        <button class="flight-link">Book my Flight</button>
-      </div>
-    </section>
-  </main>
 
-  <footer id="credits">
-    <h3>This website was created by:</h3>
-    <ul>
-      <li>Sarah Dickinson <a href="">Github</a></li>
-      <li>Luke Machalakis <a href="">Github</a></li>
-      <li>Jacob Machlis <a href="">Github</a></li>
-    </ul>
-  </footer>
+    <nav class="uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+            <h1>GTHO</h1>
+        </div>
+        <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav">
+                <li>
+                    <a class="uk-navbar-toggle" uk-navbar-toggle-icon href="#"></a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class="uk-active"><a href="#explanation">How it works</a></li>
+                            <li class="uk-active"><a href="#flights">Let's go</a></li>
+                            <li class="uk-active"><a href="#credits">Team</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="./assets/script.js"></script>
+    <main>
+        <section id="explanation">
+            <div class="uk-container uk-width-1-1">
+                <img class="uk-align-center uk-align-right@l uk-margin-remove-adjacent" src="./assets/img/photo-1594478277825-11f41a17122a.jpg" alt="">
+                <h1>Get Me the Hell Out of Here</h1>
+                <h2>What we do</h2>
+                <p>Enter your current location and GTHO will connect you with the next flight out of there. We know you like it hot and this ones gonna be a scorcher!
+                </p>
+            </div>
+        </section>
+        <section class="uk-container uk-column-1-2@l">
+            <form>
+                <div uk-scrollspy="target: > div; cls: uk-animation-fade; delay: 500">
+                    <div uk-scrollspy-class="uk-animation-slide-top">
+                        <div><span uk-icon="icon: home"></span></div>
+                        <label for="user-zip">Where are you?</label>
+                        <input type="number" minlength="5" name="user-zip" id="user-zip" name="user-zip" placeholder="Zip code" />
+                        <p>It's about to get a whole lot hotter!</p>
+                    </div>
+                    <div uk-scrollspy-class="uk-animation-slide-bottom">
+                        <div><span uk-icon="icon: world"></span></div>
+                        <label for="">Are you ready?</label>
+                        <input type="submit" value="Let's go!" />
+                        <p>I hope you packed sunscreen.</p>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section id="flights">
+            <div class="flight-info uk-container">
+                <img class="uk-align-center uk-align-left@l uk-margin-remove-adjacent" src="./assets/img/photo-1568596312185-2c3e8f8042c3.jpg" alt="">
+                <h2>Where you're headed:</h2>
+                <p class="location">You're headed to <span id=location-name>[city]</span>!</p>
+                <p>The current temperature is <span>[temp]</span>°F</p>
+                <button class="flight-link uk-button uk-button-secondary">Book my flight!</button>
+            </div>
+            <div>
+                <a href="#" uk-totop uk-scroll></a>
+            </div>
+        </section>
+    </main>
+
+    <footer id="credits">
+        <h3>This website was created by:</h3>
+        <ul>
+            <li>Sarah Dickinson
+                <a href=""></a>
+            </li>
+            <li>Luke Machalakis
+                <a href=""></a>
+            </li>
+            <li>Jacob Machlis
+                <a href=""></a>
+            </li>
+        </ul>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit-icons.min.js"></script>
+    <script src="uikit/dist/js/uikit-icons.min.js"></script>
+    <script src="./assets/script.js"></script>
 
 </body>
 
