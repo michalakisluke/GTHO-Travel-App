@@ -1,4 +1,5 @@
 apiKey = "12524a4796d1cd5b9b5d525171960baf";
+let airportArrayClear = [];
 
 // Search button click
 $(".uk-button-secondary").on("click", function (event){
@@ -13,6 +14,14 @@ $(".uk-button-secondary").on("click", function (event){
         localTempApiFetch();
     }
 });
+
+function checkNull() {
+    for (i = 0; i > airportArray; i++) {
+        if (airportArray[i] == null) {
+
+        }
+    }
+}
 
 //Fetch temp data for zip codes
 function localTempApiFetch() {
@@ -37,15 +46,12 @@ function localTempApiFetch() {
         .then(function(response){
             return response.json();
         }).then(function(response){
-            for (i = 0; i < response.length; i++) {
-                var icaoCode = response[i].icaoCode;
-                if (response[i].icaoCode == null) {
-                    response.splice(i, 1);
-                }
-            }
-            console.log(response);
+            airportArray = response;
+            let airportArrayClear = airportArray.filter(function(e){
+                return e.icaoCode != null;
+            });
+            console.log(airportArrayClear);
+
         });
     });
 }
-
-
