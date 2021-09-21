@@ -90,26 +90,24 @@
 
 
         <!-- loading wheel .uk-hidden, use js to .uk-visable on submit while loading-->
-        <section class="uk-text-center uk-padding-large uk-hidden">
+        <section id="spinner" class="uk-text-center uk-padding-large" hidden>
             <div><span uk-spinner="ratio: 4.5"></span></div>
         </section>
 
 
         <!-- .flight-info .uk-hidden, use js to .uk-visable upon load-->
-        <section id="flights">
+        <section id="flights" hidden>
             <div class="flight-info uk-column-1-2@l">
                 <img src="./assets/img/photo-1568596312185-2c3e8f8042c3.jpg" alt="">
                 <div class="uk-container-center uk-padding-large">
                     <h2>Pack your bags!</h2>
                     <p class="location">You're headed to <span id=location-name>[city]</span>!</p>
-                    <p>The current temperature is <span>[temp]</span>°F</p>
+                    <p>The current temperature is <span id="location-temp">[temp]</span>°F</p>
                     <button class="flight-link uk-button uk-button-secondary uk-border-rounded">Book my flight!</button>
                 </div>
             </div>
-        </section>
 
-        <section>
-            <div class="uk-text-center uk-padding-large">
+            <div id="go-again" class="uk-text-center uk-padding-large">
                 <a href="#location" uk-totop uk-scroll></a>
                 <p>Go again?</p>
             </div>
