@@ -39,7 +39,7 @@ function localTempApiFetch() {
             console.log("The local temp is " + localTemp + " degrees Farenheit");
             console.log("The local latitude is " + localLat);
             console.log("The local longitude is " + localLong);
-            fetch("https://aviation-reference-data.p.rapidapi.com/airports/search?lat=" + localLat + "&lon=" + localLong + "&radius=50", {
+            fetch("https://aviation-reference-data.p.rapidapi.com/airports/search?lat=" + localLat + "&lon=" + localLong + "&radius=250", {
                     "method": "GET",
                     "headers": {
                         "x-rapidapi-host": "aviation-reference-data.p.rapidapi.com",
@@ -54,7 +54,6 @@ function localTempApiFetch() {
                         return e.icaoCode != null;
                     });
                     console.log(airportArrayClear);
-
                 });
         });
 }
