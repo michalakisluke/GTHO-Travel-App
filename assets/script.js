@@ -169,6 +169,13 @@ function chooseWarmest() {
 }
 
 
-// Flight finder
+// Flight finder & publish results on page
+function findTrip() {
+    let closestAirportIATA;
+    let warmestAirportIATA;
 
-// function to pop results
+    //to do
+    // pull from local storage: warmest lat and closest lat
+    // use for loop to run through saved location array, match lat and lon for closest and hottest (Two seperate for loops)
+    // get airport IATA codes from array
+}
