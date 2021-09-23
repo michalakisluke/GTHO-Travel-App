@@ -1,4 +1,4 @@
-apiKey = "12524a4796d1cd5b9b5d525171960baf";
+var apiKey = "12524a4796d1cd5b9b5d525171960baf";
 let airportArrayClear = [];
 let tempCheckArray = [];
 var flightDate = moment().add(1, "days").format("YYYY-MM-DD");
@@ -14,9 +14,7 @@ $(".uk-button-secondary").on("click", function(event) {
     } else {
         localTempApiFetch();
         // Need to make these run in order, it's getting to chooseClosest() and chooseWarmest() before localTempApiFetch is complete
-        chooseClosest();
-        chooseWarmest();
-        findTrip();
+        
 
         // show spinner & hide user input upon click
         $("#spinner").removeAttr("hidden");
@@ -30,63 +28,68 @@ function localTempApiFetch() {
     fetch("https://api.openweathermap.org/data/2.5/weather?zip=" + zip + "&units=imperial&appid=" + apiKey)
         .then(function(response) {
             return response.json();
-        }).then(function(response) {
+        })
+        .then(function(response) {
             var localLat = response.coord.lat;
             var localLong = response.coord.lon;
             localStorage.setItem("localLat", JSON.stringify(localLat));
             localStorage.setItem("localLon", JSON.stringify(localLong));
             // Find airports within a given radius, pull lat and lon coordinates
-            fetch("https://aviation-reference-data.p.rapidapi.com/airports/search?lat=" + localLat + "&lon=" + localLong + "&radius=500", {
-                    "method": "GET",
-                    "headers": {
-                        "x-rapidapi-host": "aviation-reference-data.p.rapidapi.com",
-                        "x-rapidapi-key": "862a716dc7msh647274362d7a08cp12fe37jsn54b5d3acd3b7"
-                    }
-                })
-                .then(function(response) {
-                    return response.json();
-                }).then(function(response) {
-                    airportArray = response;
-                    let airportArrayClear = airportArray.filter(function(e) {
-                        return e.icaoCode != null;
-                    });
-                    var searchStr = "ahp"
-                    let airportArrayNoHeli = airportArrayClear.filter(function(e) {
-                        return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                    });
-                    var searchStr = "afb"
-                    let airportArrayNoAFB = airportArrayNoHeli.filter(function(e) {
-                        return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                    });
-                    var searchStr = "aaf"
-                    let airportArrayNoAAF = airportArrayNoAFB.filter(function(e) {
-                        return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                    });
-                    var searchStr = "base"
-                    let airportArrayNoBase = airportArrayNoAAF.filter(function(e) {
-                        return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                    });
-                    var searchStr = "executive"
-                    let airportArrayNoExec = airportArrayNoBase.filter(function(e) {
-                        return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                    });
-                    var searchStr = "private"
-                    let airportArrayNoPriv = airportArrayNoExec.filter(function(e) {
-                        return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                    });
-                    let airportArrayCheckLat = airportArrayNoPriv.filter(function(lat){
-                        return lat.latitude < localLat;
-                    });
-                    //console.log(airportArrayCheckLat);
-                    localStorage.setItem("array-with-IATA", JSON.stringify(airportArrayCheckLat));
-                    // Find temp at each airport
-                    for (j = 0; j < airportArrayCheckLat.length; j++) {
-                        var tempLatCheck = airportArrayCheckLat[j].latitude;
-                        var tempLonCheck = airportArrayCheckLat[j].longitude;
+            fetch("https://aviation-reference-data.p.rapidapi.com/airports/search?lat=" + localLat + "&lon=" + localLong + "&radius=250", {
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "aviation-reference-data.p.rapidapi.com",
+                    "x-rapidapi-key": "862a716dc7msh647274362d7a08cp12fe37jsn54b5d3acd3b7"
+                }
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(response) {
+                airportArray = response;
+                let airportArrayClear = airportArray.filter(function(e) {
+                    return e.icaoCode != null;
+                });
+                var searchStr = "ahp"
+                let airportArrayNoHeli = airportArrayClear.filter(function(e) {
+                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
+                });
+                var searchStr = "afb"
+                let airportArrayNoAFB = airportArrayNoHeli.filter(function(e) {
+                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
+                });
+                var searchStr = "aaf"
+                let airportArrayNoAAF = airportArrayNoAFB.filter(function(e) {
+                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
+                });
+                var searchStr = "base"
+                let airportArrayNoBase = airportArrayNoAAF.filter(function(e) {
+                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
+                });
+                var searchStr = "executive"
+                let airportArrayNoExec = airportArrayNoBase.filter(function(e) {
+                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
+                });
+                var searchStr = "private"
+                let airportArrayNoPriv = airportArrayNoExec.filter(function(e) {
+                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
+                });
+                let airportArrayCheckLat = airportArrayNoPriv.filter(function(lat){
+                    return lat.latitude < localLat;
+                });
+                //console.log(airportArrayCheckLat);
+                localStorage.setItem("array-with-IATA", JSON.stringify(airportArrayCheckLat));
+                // Find temp at each airport
+                var promises = []
+                airportArrayCheckLat.forEach(function(coord) {
+                    promises.push(new Promise(function(resolve, reject) {
+                        var tempLatCheck = coord.latitude;
+                        var tempLonCheck = coord.longitude;
                         fetch("https://api.openweathermap.org/data/2.5/weather?lat="+ tempLatCheck + "&lon=" + tempLonCheck + "&units=imperial&appid=" + apiKey)
                         .then(function(response){
                             return response.json();
-                        }).then(function(response){
+                        })
+                        .then(function(response){
                             var airTemp = response.main.temp;
                             var latAtAirport = response.coord.lat;
                             var lonAtAirport = response.coord.lon;
@@ -96,10 +99,19 @@ function localTempApiFetch() {
                             var nestedArrayElem = {"latitude": latAtAirport, "longitude": lonAtAirport, "temp": airTemp, "distance": dist};
                             tempCheckArray.push(nestedArrayElem);
                             localStorage.setItem("array", JSON.stringify(tempCheckArray));
+                            resolve("done")
                         });
-                    };
+                    }))
                 });
-        });
+                Promise.all(promises)
+                .then(function() {
+                    chooseClosest();
+                    chooseWarmest();
+                    findTrip();
+                })
+            })
+        })
+        
 }
 
 // find closest airport
@@ -125,10 +137,9 @@ function distance(latAtAirport, lonAtAirport, localLat, localLon) {
 
 // Choose closest airport, save codes <this runs second>
 function chooseClosest() {
-    var airportsByDistance = JSON.parse(localStorage.getItem("array"));
-    for (var i = 0; i < airportsByDistance.length; i++) {
+    for (var i = 0; i < tempCheckArray.length; i++) {
         // Sort Distances
-        airportsByDistance.sort(function(a,b) {
+        tempCheckArray.sort(function(a,b) {
           let varA;
           let varB;
           varA = a["distance"];
@@ -142,7 +153,7 @@ function chooseClosest() {
           return 0;
         });
     }
-    airportsByDistanceClosest = airportsByDistance.reverse();
+    airportsByDistanceClosest = tempCheckArray.reverse();
     closestAirportLat = airportsByDistanceClosest[0]["latitude"];
     closestAirportLon = airportsByDistanceClosest[0]["longitude"];
     localStorage.setItem("closestLatLon", JSON.stringify({"latitude": closestAirportLat, "longitude": closestAirportLon}));
@@ -150,10 +161,9 @@ function chooseClosest() {
 
 // Choose warmest airport, save codes <this runs third>
 function chooseWarmest() {
-    var airportsByTemp = JSON.parse(localStorage.getItem("array"));
-    for (var i = 0; i < airportsByTemp.length; i++) {
+    for (var i = 0; i < tempCheckArray.length; i++) {
         // Sort Distances
-        airportsByTemp.sort(function(a,b) {
+        tempCheckArray.sort(function(a,b) {
           let varA;
           let varB;
           varA = a["temp"];
@@ -167,8 +177,8 @@ function chooseWarmest() {
           return 0;
         });
     }
-    warmestAirportLat = airportsByTemp[0]["latitude"];
-    warmestAirportLon = airportsByTemp[0]["longitude"];
+    warmestAirportLat = tempCheckArray[0]["latitude"];
+    warmestAirportLon = tempCheckArray[0]["longitude"];
     localStorage.setItem("warmLatLon", JSON.stringify({"latitude": warmestAirportLat, "longitude": warmestAirportLon}));
 }
 
