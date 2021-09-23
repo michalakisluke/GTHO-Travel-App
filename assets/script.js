@@ -1,6 +1,8 @@
 apiKey = "12524a4796d1cd5b9b5d525171960baf";
 let airportArrayClear = [];
 let tempCheckArray = [];
+var flightDate = moment().add(1, "days").format("YYYY-MM-DD");
+var returnDate = moment().add(4, "days").format("YYYY-MM-DD");
 
 // Search button click
 $(".uk-button-secondary").on("click", function(event) {
@@ -11,8 +13,10 @@ $(".uk-button-secondary").on("click", function(event) {
         return;
     } else {
         localTempApiFetch();
+        // Need to make these run in order, it's getting to chooseClosest() and chooseWarmest() before localTempApiFetch is complete
         chooseClosest();
         chooseWarmest();
+        findTrip();
 
         // show spinner & hide user input upon click
         $("#spinner").removeAttr("hidden");
@@ -73,7 +77,8 @@ function localTempApiFetch() {
                     let airportArrayCheckLat = airportArrayNoPriv.filter(function(lat){
                         return lat.latitude < localLat;
                     });
-                    console.log(airportArrayCheckLat);
+                    //console.log(airportArrayCheckLat);
+                    localStorage.setItem("array-with-IATA", JSON.stringify(airportArrayCheckLat));
                     // Find temp at each airport
                     for (j = 0; j < airportArrayCheckLat.length; j++) {
                         var tempLatCheck = airportArrayCheckLat[j].latitude;
@@ -138,10 +143,9 @@ function chooseClosest() {
         });
     }
     airportsByDistanceClosest = airportsByDistance.reverse();
-    console.log(airportsByDistanceClosest);
     closestAirportLat = airportsByDistanceClosest[0]["latitude"];
     closestAirportLon = airportsByDistanceClosest[0]["longitude"];
-    localStorage.setItem("closestLatLon", JSON.stringify([closestAirportLat, closestAirportLon]));
+    localStorage.setItem("closestLatLon", JSON.stringify({"latitude": closestAirportLat, "longitude": closestAirportLon}));
 }
 
 // Choose warmest airport, save codes <this runs third>
@@ -165,17 +169,50 @@ function chooseWarmest() {
     }
     warmestAirportLat = airportsByTemp[0]["latitude"];
     warmestAirportLon = airportsByTemp[0]["longitude"];
-    localStorage.setItem("warmLatLon", JSON.stringify([warmestAirportLat, warmestAirportLon]));
+    localStorage.setItem("warmLatLon", JSON.stringify({"latitude": warmestAirportLat, "longitude": warmestAirportLon}));
 }
 
 
-// Flight finder & publish results on page
+// Flight finder & publish results on page <this runs fourth>
 function findTrip() {
     let closestAirportIATA;
     let warmestAirportIATA;
-
-    //to do
-    // pull from local storage: warmest lat and closest lat
-    // use for loop to run through saved location array, match lat and lon for closest and hottest (Two seperate for loops)
-    // get airport IATA codes from array
+    var closestData = JSON.parse(localStorage.getItem("closestLatLon"));
+    //console.log("The longitude at your closest airport is " + closestData["longitude"]);
+    //console.log("The latitude at your closest airport is " + closestData["latitude"]);
+    var warmestData = JSON.parse(localStorage.getItem("warmLatLon"));
+    //console.log("The longitude at your warmest airport is " + warmestData["longitude"]);
+    //console.log("The latitude at your warmest airport is " + warmestData["latitude"]);
+    var airportArrayFinal = JSON.parse(localStorage.getItem("array-with-IATA"));
+    for (i = 0; i < airportArrayFinal.length; i++) {
+        //console.log("At index " + i + " the latitude is " + airportArrayFinal[i]["latitude"]);
+        //console.log("At index " + i + " the longitude is " + airportArrayFinal[i]["longitude"]);
+        //console.log("At index " + i + " the IATA Code is " + airportArrayFinal[i]["iataCode"]);
+        if (warmestData["latitude"] === closestData["latitude"] &&  warmestData["longitude"] === closestData["longitude"]) {
+            console.log("You're already at the hottest place");
+            return;
+        }
+        else if (airportArrayFinal[i]["latitude"] === warmestData["latitude"] && airportArrayFinal[i]["longitude"] === warmestData["longitude"]) {
+            warmestAirportIATA = airportArrayFinal[i]["iataCode"];
+        }
+        else if (airportArrayFinal[i]["latitude"] === closestData["latitude"] && airportArrayFinal[i]["longitude"] === closestData["longitude"]) {
+            closestAirportIATA = airportArrayFinal[i]["iataCode"];
+        }
+    }
+    console.log(closestAirportIATA);
+    console.log(warmestAirportIATA);
+    // Fetch flights using sky scanner
+    fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/US/USD/en-US/" + closestAirportIATA + 
+    "-sky/" + warmestAirportIATA + "-sky/" + flightDate + "?inboundpartialdate=" + returnDate, {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
+            "x-rapidapi-key": "862a716dc7msh647274362d7a08cp12fe37jsn54b5d3acd3b7"
+        }
+    })
+    .then(function(response){
+        return response.json();
+    }).then(function(response){
+        console.log(response);
+    });
 }
