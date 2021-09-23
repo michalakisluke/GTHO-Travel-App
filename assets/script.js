@@ -1,8 +1,14 @@
 var apiKey = "12524a4796d1cd5b9b5d525171960baf";
 let airportArrayClear = [];
 let tempCheckArray = [];
+let localLat;
+let localLon;
+let warmLatLon;
+let closeLatLon;
+let airportArrayIATA;
 var flightDate = moment().add(1, "days").format("YYYY-MM-DD");
 var returnDate = moment().add(4, "days").format("YYYY-MM-DD");
+
 
 // Search button click
 $(".uk-button-secondary").on("click", function(event) {
@@ -13,9 +19,6 @@ $(".uk-button-secondary").on("click", function(event) {
         return;
     } else {
         localTempApiFetch();
-        // Need to make these run in order, it's getting to chooseClosest() and chooseWarmest() before localTempApiFetch is complete
-        
-
         // show spinner & hide user input upon click
         $("#spinner").removeAttr("hidden");
         $("#location").attr("hidden", true);
@@ -32,8 +35,8 @@ function localTempApiFetch() {
         .then(function(response) {
             var localLat = response.coord.lat;
             var localLong = response.coord.lon;
-            localStorage.setItem("localLat", JSON.stringify(localLat));
-            localStorage.setItem("localLon", JSON.stringify(localLong));
+            //localStorage.setItem("localLat", JSON.stringify(localLat)); ---- removing localStorage for localLat
+            //localStorage.setItem("localLon", JSON.stringify(localLong)); ---- remvoing localStorage for localLon
             // Find airports within a given radius, pull lat and lon coordinates
             fetch("https://aviation-reference-data.p.rapidapi.com/airports/search?lat=" + localLat + "&lon=" + localLong + "&radius=250", {
                 "method": "GET",
@@ -78,7 +81,8 @@ function localTempApiFetch() {
                     return lat.latitude < localLat;
                 });
                 //console.log(airportArrayCheckLat);
-                localStorage.setItem("array-with-IATA", JSON.stringify(airportArrayCheckLat));
+                airportArrayIATA = airportArrayCheckLat;
+                //localStorage.setItem("array-with-IATA", JSON.stringify(airportArrayCheckLat)); ---- replaced above
                 // Find temp at each airport
                 var promises = []
                 airportArrayCheckLat.forEach(function(coord) {
@@ -93,12 +97,12 @@ function localTempApiFetch() {
                             var airTemp = response.main.temp;
                             var latAtAirport = response.coord.lat;
                             var lonAtAirport = response.coord.lon;
-                            localLat = JSON.parse(localStorage.getItem("localLat"));
-                            localLon = JSON.parse(localStorage.getItem("localLon"));
+                            //localLat = JSON.parse(localStorage.getItem("localLat")); ---- remove pull of localLat
+                            //localLon = JSON.parse(localStorage.getItem("localLon")); ---- remove pull of LocalLon
                             dist = distance(latAtAirport, lonAtAirport, localLat, localLon);
                             var nestedArrayElem = {"latitude": latAtAirport, "longitude": lonAtAirport, "temp": airTemp, "distance": dist};
                             tempCheckArray.push(nestedArrayElem);
-                            localStorage.setItem("array", JSON.stringify(tempCheckArray));
+                            //localStorage.setItem("array", JSON.stringify(tempCheckArray)); ---- remove save of array
                             resolve("done")
                         });
                     }))
@@ -156,7 +160,8 @@ function chooseClosest() {
     airportsByDistanceClosest = tempCheckArray.reverse();
     closestAirportLat = airportsByDistanceClosest[0]["latitude"];
     closestAirportLon = airportsByDistanceClosest[0]["longitude"];
-    localStorage.setItem("closestLatLon", JSON.stringify({"latitude": closestAirportLat, "longitude": closestAirportLon}));
+    closeLatLon = {"latitude": closestAirportLat, "longitude": closestAirportLon};
+    //localStorage.setItem("closestLatLon", JSON.stringify({"latitude": closestAirportLat, "longitude": closestAirportLon})); ---- replaced above
 }
 
 // Choose warmest airport, save codes <this runs third>
@@ -179,7 +184,8 @@ function chooseWarmest() {
     }
     warmestAirportLat = tempCheckArray[0]["latitude"];
     warmestAirportLon = tempCheckArray[0]["longitude"];
-    localStorage.setItem("warmLatLon", JSON.stringify({"latitude": warmestAirportLat, "longitude": warmestAirportLon}));
+    warmLatLon = {"latitude": warmestAirportLat, "longitude": warmestAirportLon};
+    //localStorage.setItem("warmLatLon", JSON.stringify({"latitude": warmestAirportLat, "longitude": warmestAirportLon})); ---- replaced above
 }
 
 
@@ -187,17 +193,13 @@ function chooseWarmest() {
 function findTrip() {
     let closestAirportIATA;
     let warmestAirportIATA;
-    var closestData = JSON.parse(localStorage.getItem("closestLatLon"));
-    //console.log("The longitude at your closest airport is " + closestData["longitude"]);
-    //console.log("The latitude at your closest airport is " + closestData["latitude"]);
-    var warmestData = JSON.parse(localStorage.getItem("warmLatLon"));
-    //console.log("The longitude at your warmest airport is " + warmestData["longitude"]);
-    //console.log("The latitude at your warmest airport is " + warmestData["latitude"]);
-    var airportArrayFinal = JSON.parse(localStorage.getItem("array-with-IATA"));
+    var closestData = closeLatLon;
+    //var closestData = JSON.parse(localStorage.getItem("closestLatLon")); ---- replaced aboce
+    var warmestData = warmLatLon;
+    //var warmestData = JSON.parse(localStorage.getItem("warmLatLon")); ---- replaced above
+    airportArrayFinal = airportArrayIATA;
+    //var airportArrayFinal = JSON.parse(localStorage.getItem("array-with-IATA")); ---- replaced above
     for (i = 0; i < airportArrayFinal.length; i++) {
-        //console.log("At index " + i + " the latitude is " + airportArrayFinal[i]["latitude"]);
-        //console.log("At index " + i + " the longitude is " + airportArrayFinal[i]["longitude"]);
-        //console.log("At index " + i + " the IATA Code is " + airportArrayFinal[i]["iataCode"]);
         if (warmestData["latitude"] === closestData["latitude"] &&  warmestData["longitude"] === closestData["longitude"]) {
             console.log("You're already at the hottest place");
             return;
