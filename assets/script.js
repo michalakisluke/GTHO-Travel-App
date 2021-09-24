@@ -34,7 +34,9 @@ function localTempApiFetch() {
         })
         .then(function(response) {
             var localLat = response.coord.lat;
+            console.log(localLat);
             var localLong = response.coord.lon;
+            console.log(localLong);
             //localStorage.setItem("localLat", JSON.stringify(localLat)); ---- removing localStorage for localLat
             //localStorage.setItem("localLon", JSON.stringify(localLong)); ---- remvoing localStorage for localLon
             // Find airports within a given radius, pull lat and lon coordinates
@@ -97,6 +99,10 @@ function localTempApiFetch() {
                             var airTemp = response.main.temp;
                             var latAtAirport = response.coord.lat;
                             var lonAtAirport = response.coord.lon;
+                            //var localLat = localLat;
+                            // console.log(localLat);
+                            // var localLon = localLong;
+                            // console.log(localLon);
                             //localLat = JSON.parse(localStorage.getItem("localLat")); ---- remove pull of localLat
                             //localLon = JSON.parse(localStorage.getItem("localLon")); ---- remove pull of LocalLon
                             dist = distance(latAtAirport, lonAtAirport, localLat, localLon);
@@ -141,6 +147,7 @@ function distance(latAtAirport, lonAtAirport, localLat, localLon) {
 
 // Choose closest airport, save codes <this runs second>
 function chooseClosest() {
+    console.log(tempCheckArray);
     for (var i = 0; i < tempCheckArray.length; i++) {
         // Sort Distances
         tempCheckArray.sort(function(a,b) {
@@ -166,6 +173,7 @@ function chooseClosest() {
 
 // Choose warmest airport, save codes <this runs third>
 function chooseWarmest() {
+    console.log(tempCheckArray);
     for (var i = 0; i < tempCheckArray.length; i++) {
         // Sort Distances
         tempCheckArray.sort(function(a,b) {
