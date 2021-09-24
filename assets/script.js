@@ -226,7 +226,7 @@ function writeInfo() {
     }
 
     $("#location-name").html(destCity);
-
+    
     var destAirportTemp = tempCheckArray[0]["temp"];
     $("#location-temp").html(destAirportTemp);
 }
