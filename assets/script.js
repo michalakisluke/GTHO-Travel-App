@@ -15,7 +15,6 @@ $(".uk-button-secondary").on("click", function(event) {
     event.preventDefault();
     zip = $("#user-zip").val().trim();
     if (zip === '') {
-        console.log("You woulda thought");
         return;
     } else {
         localTempApiFetch();
