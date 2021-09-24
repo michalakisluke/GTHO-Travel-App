@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./assets/img/heat.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="./assets/style.css" />
+    <title>Get Me the Hell Out of Here</title>
+</head>
+
+<body>
+
+    <nav class="uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+            <h1 class="uk-logo uk-margin-medium-left">GTHO</h1>
+        </div>
+        <div class="uk-navbar-right uk-margin-medium-right">
+            <ul class="uk-navbar-nav">
+                <li>
+                    <a uk-toggle="target: #offcanvas-nav" uk-navbar-toggle-icon href="#"></a>
+                    <div id="offcanvas-nav" uk-offcanvas="overlay: true; flip: true">
+                        <div class="uk-offcanvas-bar">
+                            <ul class="uk-nav">
+                                <li><a href="#explanation"><span class="uk-margin-small-right" uk-icon="icon: info"></span> How it works</a></li>
+                                <li><a href="#locations"><span class="uk-margin-small-right" uk-icon="icon: world"></span> Let's go</a></li>
+                                <li><a href="#credits"><span class="uk-margin-small-right" uk-icon="icon: users"></span> Team</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+
+        <section id="explanation">
+            <div class="uk-column-1-2@l">
+
+                <div class="uk-inline">
+                    <img src="./assets/img/photo-1594478277825-11f41a17122a.jpg" alt="">
+                    <div class="uk-overlay uk-position-top">
+                        <h1>Get Me the Hell Out of Here</h1>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="uk-container-center uk-padding-large uk-text-middle@l">
+                        <h2>What we do</h2>
+                        <p>Enter your current location and GTHO will connect you with the next flight out of there. We know you like it hot and this ones gonna be a scorcher!
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="uk-text-center uk-padding-large">
+                <p>What are you waiting for? Get the hell out of here!</p>
+                <a href="#location" uk-icon="icon: chevron-down"></a>
+            </div>
+        </section>
+
+        <section id="location">
+            <form>
+                <div class="uk-column-1-2@l">
+                    <div class="uk-text-center uk-padding-large uk-margin">
+                        <div><span uk-icon="icon: location; ratio: 4"></span></div>
+                        <div class="uk-padding-small"><label for="user-zip">Where are you?</label></div>
+                        <div><input class="uk-input uk-form-width-small" type="text" minlength="5" name="user-zip" id="user-zip" name="user-zip" placeholder="Zip Code" /></div>
+                        <p>It's about to get a whole lot hotter!</p>
+                    </div>
+
+
+                    <div class="uk-text-center uk-padding-large uk-margin">
+                        <div><span uk-icon="icon: world; ratio: 4"></span></div>
+                        <div class="uk-padding-small"><label for="">Are you ready?</label></div>
+                        <div><input type="submit" value="Let's go!" class="uk-input uk-form-width-small uk-button-secondary" /></div>
+                        <p>I hope you packed sunscreen.</p>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+
+
+
+        <!-- loading wheel .uk-hidden, use js to .uk-visable on submit while loading-->
+        <section id="spinner" class="uk-text-center uk-padding-large" hidden>
+            <div><span uk-spinner="ratio: 4.5"></span></div>
+        </section>
+
+
+        <!-- .flight-info .uk-hidden, use js to .uk-visable upon load-->
+        <section id="flights" hidden>
+            <div class="flight-info uk-column-1-2@l">
+                <img src="./assets/img/photo-1568596312185-2c3e8f8042c3.jpg" alt="">
+                <div class="uk-container-center uk-padding-large">
+                    <h2>Pack your bags!</h2>
+                    <p class="location">You're headed to <span id=location-name>[city]</span>!</p>
+                    <p>The current temperature is <span id="location-temp">[temp]</span>°F</p>
+                    <button class="flight-link uk-button uk-button-secondary uk-border-rounded">Book my flight!</button>
+                </div>
+            </div>
+
+            <div id="go-again" class="uk-text-center uk-padding-large">
+                <a href="#location" uk-totop uk-scroll></a>
+                <p>Go again?</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="credits">
+        <div class="uk-tile uk-tile-muted uk-padding-large">
+            <div class="uk-text-center">
+                <h3>Brought to you by</h3>
+            </div>
+            <div class="uk-grid-collapse uk-text-center">
+                <div><a class="uk-tile uk-padding-remove uk-text-small" href="#"><span class="uk-margin-small" uk-icon="icon: user"></span> Jacob Machlis<a href=""></a></div>
+
+                <div> <a class="uk-tile uk-padding-remove uk-text-small" href="#"><span class="uk-margin-small" uk-icon="icon: user"></span> Luke Michalakis<a href=""></a></div>
+
+                <div><a class="uk-tile uk-padding-remove uk-text-small" href="#"><span class="uk-margin-small" uk-icon="icon: user"></span> Sarah Dickinson</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit-icons.min.js"></script>
+    <script src="uikit/dist/js/uikit-icons.min.js"></script>
+    <script src="./assets/script.js"></script>
+
+</body>
+
+</html>
