@@ -8,6 +8,22 @@ let closeLatLon;
 let airportArrayIATA;
 var flightDate = moment().add(1, "days").format("YYYY-MM-DD");
 var returnDate = moment().add(4, "days").format("YYYY-MM-DD");
+var bigAirports = [{"IATA Code": "ATL", "city": "Atlanta"}, {"IATA Code": "DFW", "city": "Dallas"}, {"IATA Code": "DEN", "city": "Denver"}, {"IATA Code": "ORD", "city": "Chicago"},
+                     {"IATA Code": "LAX", "city": "Los Angeles"}, {"IATA Code": "CLT", "city": "Charlotte"}, {"IATA Code": "LAS", "city": "Las Vegas"},
+                     {"IATA Code": "PHX", "city": "Phoenix"}, {"IATA Code": "MCO", "city": "Orlando"}, {"IATA Code": "SEA", "city": "Seattle"}, {"IATA Code": "MIA", "city": "Miami"},{"IATA Code": "IAH", "city": "Houston"},
+                     {"IATA Code": "JFK", "city": "New York City"}, {"IATA Code": "FLL", "city": "Fort Lauderdale"}, {"IATA Code": "SFO", "city": "San Francisco"},
+                     {"IATA Code": "EWR", "city": "Newark"}, {"IATA Code": "MSP", "city": "Minneapolis"}, {"IATA Code": "DTW", "city": "Detroit"}, {"IATA Code": "BOS", "city": "Boston"},
+                     {"IATA Code": "PHL", "city": "Philadelphia"}, {"IATA Code": "STL", "city": "St. Louis"}, {"IATA Code": "BWI", "city": "Baltimore"}, {"IATA Code": "TPA", "city": "Tampa"},
+                     {"IATA Code": "SAN", "city": "San Diego"}, {"IATA Code": "SLC", "city": "Salt Lake City"}, {"IATA Code": "IAD", "city": "Washington, D.C."}, {"IATA Code": "BNA", "city": "Nashville"},
+                     {"IATA Code": "LGA", "city": "New York City"}, {"IATA Code": "DAL", "city": "Dallas"}, {"IATA Code": "DCA", "city": "Washington, D.C."}, {"IATA Code": "PDX", "city": "Portland"},
+                     {"IATA Code": "HNL", "city": "Honolulu"}, {"IATA Code": "HOU", "city": "Houston"}, {"IATA Code": "AUS", "city": "Austin"}, {"IATA Code": "MDW", "city": "Chicago"},
+                     {"IATA Code": "RSW", "city": "Fort Myers"}, {"IATA Code": "SMF", "city": "Sacramento"}, {"IATA Code": "MSY", "city": "New Orleans"}, {"IATA Code": "RDU", "city": "Raleigh"},
+                     {"IATA Code": "SJU", "city": "San Juan"}, {"IATA Code": "SJC", "city": "San Jose"}, {"IATA Code": "OAK", "city": "Oakland"}, {"IATA Code": "MCI", "city": "Kansas City"}, 
+                     {"IATA Code": "CLE", "city": "Cleveland"}, {"IATA Code": "IND", "city": "Indianapolis"}, {"IATA Code": "SAT", "city": "San Antonio"}, {"IATA Code": "SNA", "city": "Orange County"},
+                     {"IATA Code": "PIT", "city": "Pittsburgh"}, {"IATA Code": "CVG", "city": "Cincinatti"}, {"IATA Code": "CMH", "city": "Columbus"}, {"IATA Code": "PBI", "city": "Palm Beach"}, 
+                     {"IATA Code": "JAX", "city": "Jackonsville"}, {"IATA Code": "MKE", "city": "Milwaukee"}, {"IATA Code": "ONT", "city": "Ontario"}, {"IATA Code": "BDL", "city": "Hartford"},
+                     {"IATA Code": "OGC", "city": "Kahului"}, {"IATA Code": "ANC", "city": "Anchorage"}, {"IATA Code": "OMA", "city": "Omaha"}, {"IATA Code": "MEM", "city": "Memphis"}, 
+                     {"IATA Code": "RNO", "city": "Reno"}];
 
 
 // Search button click
@@ -109,7 +125,7 @@ function localTempApiFetch() {
                     chooseClosest();
                     chooseWarmest();
                     findTrip();
-                    $("#location").removeAttr("hidden");
+                    $("#flights").removeAttr("hidden");
                     $("#spinner").attr("hidden", true);
                 })
             })
