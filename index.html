@@ -18,7 +18,7 @@
 
     <nav class="uk-navbar-container" uk-navbar>
         <div class="uk-navbar-left">
-            <h1 class="uk-logo uk-margin-medium-left">GTHO</h1>
+            <img src="./assets/img/heat.png" height="40" width="40" class="uk-logo uk-margin-medium-left" uk-svg></img>
         </div>
         <div class="uk-navbar-right uk-margin-medium-right">
             <ul class="uk-navbar-nav">
@@ -46,7 +46,7 @@
                 <div class="uk-inline">
                     <img src="./assets/img/photo-1594478277825-11f41a17122a.jpg" alt="">
                     <div class="uk-overlay uk-position-top">
-                        <h1>Get Me the Hell Out of Here</h1>
+                        <h1>Get Me the Hell Out of Here!</h1>
                     </div>
                 </div>
 
@@ -68,19 +68,23 @@
         <section id="location">
             <form>
                 <div class="uk-column-1-2@l">
-                    <div class="uk-text-center uk-padding-large uk-margin">
+                    <div id="ui-buttons" class="uk-text-center uk-padding-large uk-margin">
                         <div><span uk-icon="icon: location; ratio: 4"></span></div>
                         <div class="uk-padding-small"><label for="user-zip">Where are you?</label></div>
-                        <div><input class="uk-input uk-form-width-small" type="text" minlength="5" name="user-zip" id="user-zip" name="user-zip" placeholder="Zip Code" /></div>
-                        <p>It's about to get a whole lot hotter!</p>
+                        <div><input id="geolocate" type="submit" value="Use my location" class="uk-input uk-form-width-small uk-button-secondary uk-margin" /></div>
+                        <div><input id="enter-zip" type="submit" value="Enter zip code" class="uk-input uk-form-width-small uk-button-secondary uk-margin" /></div>
+                        <div><input class="uk-input uk-form-width-small" type="text" minlength="5" id="user-zip" name="user-zip" placeholder="Zip Code" hidden/></div>
+                        <datalist id="user-zip">                          
+                        </datalist>
+                        <p hidden>It's about to get a whole lot hotter!</p>
                     </div>
 
 
-                    <div class="uk-text-center uk-padding-large uk-margin">
+                    <div id="go-container" class="uk-text-center uk-padding-large uk-margin" hidden>
                         <div><span uk-icon="icon: world; ratio: 4"></span></div>
                         <div class="uk-padding-small"><label for="">Are you ready?</label></div>
-                        <div><input type="submit" value="Let's go!" class="uk-input uk-form-width-small uk-button-secondary" /></div>
-                        <p>I hope you packed sunscreen.</p>
+                        <div><input id="search-button" type="submit" value="Let's go!" class="uk-input uk-form-width-small uk-button-secondary" /></div>
+                        <p>I hope you packed your sunscreen!</p>
                     </div>
                 </div>
             </form>
@@ -118,19 +122,20 @@
     <footer id="credits">
         <div class="uk-tile uk-tile-muted uk-padding-large">
             <div class="uk-text-center">
-                <h3>Brought to you by</h3>
+                <h3>Brought to you by:</h3>
             </div>
             <div class="uk-grid-collapse uk-text-center">
-                <div><a class="uk-tile uk-padding-remove uk-text-small" href="#"><span class="uk-margin-small" uk-icon="icon: user"></span> Jacob Machlis<a href=""></a></div>
+                <div><a class="uk-tile uk-padding-remove uk-text-small" href="https://github.com/flumanuck"><span class="uk-margin-small" uk-icon="icon: user"></span> Jacob Machlis</div>
 
-                <div> <a class="uk-tile uk-padding-remove uk-text-small" href="#"><span class="uk-margin-small" uk-icon="icon: user"></span> Luke Michalakis<a href=""></a></div>
+                <div><a class="uk-tile uk-padding-remove uk-text-small" href="https://github.com/michalakisluke"><span class="uk-margin-small" uk-icon="icon: user"></span> Luke Michalakis</div>
 
-                <div><a class="uk-tile uk-padding-remove uk-text-small" href="#"><span class="uk-margin-small" uk-icon="icon: user"></span> Sarah Dickinson</a></div>
+                <div><a class="uk-tile uk-padding-remove uk-text-small" href="https://github.com/sarahdickinson"><span class="uk-margin-small" uk-icon="icon: user"></span> Sarah Dickinson</div>
             </div>
         </div>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit-icons.min.js"></script>
