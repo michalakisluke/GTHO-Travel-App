@@ -74,8 +74,12 @@ function localTempApiFetch() {
                 var searchStr = "private"
                 let airportArrayNoPriv = airportArrayNoExec.filter(function(e) {
                     return !e.name.toLowerCase().includes(searchStr.toLowerCase());
+                }); 
+                var searchStr = "regional"
+                let airportArrayNoReg = airportArrayNoPriv.filter(function(e){
+                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
                 });
-                let airportArrayCheckLat = airportArrayNoPriv.filter(function(lat){
+                let airportArrayCheckLat = airportArrayNoReg.filter(function(lat){
                     return lat.latitude < localLat;
                 });
                 //console.log(airportArrayCheckLat);
@@ -94,8 +98,6 @@ function localTempApiFetch() {
                             var airTemp = response.main.temp;
                             var latAtAirport = response.coord.lat;
                             var lonAtAirport = response.coord.lon;
-                            console.log(localLat);
-                            console.log(localLong);
                             dist = distance(latAtAirport, lonAtAirport, localLat, localLong);
                             var nestedArrayElem = {"latitude": latAtAirport, "longitude": lonAtAirport, "temp": airTemp, "distance": dist};
                             tempCheckArray.push(nestedArrayElem);
@@ -137,7 +139,6 @@ function distance(latAtAirport, lonAtAirport, localLat, localLon) {
 
 // Choose closest airport, save codes <this runs second>
 function chooseClosest() {
-    console.log(tempCheckArray);
     for (var i = 0; i < tempCheckArray.length; i++) {
         // Sort Distances
         tempCheckArray.sort(function(a,b) {
@@ -162,7 +163,6 @@ function chooseClosest() {
 
 // Choose warmest airport, save codes <this runs third>
 function chooseWarmest() {
-    console.log(tempCheckArray);
     for (var i = 0; i < tempCheckArray.length; i++) {
         // Sort Distances
         tempCheckArray.sort(function(a,b) {
@@ -204,8 +204,6 @@ function findTrip() {
             closestAirportIATA = airportArrayFinal[i]["iataCode"];
         }
     }
-    console.log(closestAirportIATA);
-    console.log(warmestAirportIATA);
     // Fetch flights using sky scanner
     fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/US/USD/en-US/" + closestAirportIATA + 
     "-sky/" + warmestAirportIATA + "-sky/" + flightDate + "?inboundpartialdate=" + returnDate, {
