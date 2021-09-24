@@ -109,6 +109,8 @@ function localTempApiFetch() {
                     chooseClosest();
                     chooseWarmest();
                     findTrip();
+                    $("#location").removeAttr("hidden");
+                    $("#spinner").attr("hidden", true);
                 })
             })
         })
