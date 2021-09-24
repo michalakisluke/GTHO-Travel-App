@@ -1,6 +1,10 @@
 apiKey = "12524a4796d1cd5b9b5d525171960baf";
 let airportArrayClear = [];
 
+navigator.geolocation.getCurrentPosition(function(o) { console.log(o) });
+
+
+
 // Search button click
 $(".uk-button-secondary").on("click", function(event) {
     event.preventDefault();
@@ -58,5 +62,3 @@ function localTempApiFetch() {
                 });
         });
 }
-
-// function to pop results
