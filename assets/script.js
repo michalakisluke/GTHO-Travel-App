@@ -27,7 +27,7 @@ $(".uk-button-secondary").on("click", function(event) {
 
 //Fetch temp data for zip codes <This runs first>
 function localTempApiFetch() {
-    // Write a fetch request to the OpenWeather API for lat and lon and local temp
+    // Write a fetch request to the OpenWeather API for lat and lon and localtemp
     fetch("https://api.openweathermap.org/data/2.5/weather?zip=" + zip + "&units=imperial&appid=" + apiKey)
         .then(function(response) {
             return response.json();
