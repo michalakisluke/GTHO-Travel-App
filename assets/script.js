@@ -211,6 +211,8 @@ function writeInfo() {
     $("#location-name").html(destCity);
 
     var destAirportTemp = tempCheckArray[0]["temp"];
+    var destAirportTemp = Math.round(destAirportTemp);
     $("#location-temp").html(destAirportTemp);
+
 }
 
