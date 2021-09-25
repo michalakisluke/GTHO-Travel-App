@@ -5,9 +5,9 @@ Get Me the Hell Out of Here is a travel application that utilizes flight, locati
 
 
 ## Screenshots
-[]()
-[]()
-[]()
+![GTHO application user input screenshot](assets/img/gtho_screenshot1.png)
+![GTHO application results screenshot](assets/img/gtho_screenshot2.png)
+![GTHO application history and credit screenshot](assets/img/gtho_screenshot3.png)
 
 
 ## Link to Deployed Application
