@@ -18,7 +18,7 @@
 
     <nav class="uk-navbar-container" uk-navbar>
         <div class="uk-navbar-left">
-            <h1 class="uk-logo uk-margin-medium-left">GTHO</h1>
+            <img src="./assets/img/heat.png" height="40" width="40" class="uk-logo uk-margin-medium-left" uk-svg></img>
         </div>
         <div class="uk-navbar-right uk-margin-medium-right">
             <ul class="uk-navbar-nav">
@@ -41,28 +41,29 @@
     <main>
 
         <section id="explanation">
-            <div class="uk-column-1-2@l">
+            <div class="uk-flex uk-child-width-1-2@m" uk-grid>
 
-                <div class="uk-inline">
+                <div class="uk-card">
                     <img src="./assets/img/photo-1594478277825-11f41a17122a.jpg" alt="">
-                    <div class="uk-overlay uk-position-top">
-                        <h1>Get Me the Hell Out of Here!</h1>
+                    <div class="uk-overlay uk-position-medium uk-position-top-center uk-hidden@m">
+                        <h1 id="h1">Get Me the Hell Out of Here!</h1>
                     </div>
                 </div>
 
-                <div>
-                    <div class="uk-container-center uk-padding-large uk-text-middle@l">
-                        <h2>What we do:</h2>
+                <div class="uk-card uk-flex-first@m">
+                    <div class="uk-container-center uk-padding-large uk-text-middle">
+                        <h1 class="uk-visible@m">Get Me the Hell Out of Here!</h1>
+                        <h2 class="uk-heading-line uk-text-right uk-margin-small-right"><span>What we do</span></h2>
                         <p>Enter your current location and GTHO will connect you with the next flight out of there. We know you like it hot and this ones gonna be a scorcher!
                         </p>
+                        <div class="down-button uk-text-center uk-padding-large">
+                            <p>What are you waiting for? Get the hell out of here!</p>
+                            <a class="uk-link-muted uk-text-break" href="#location" uk-icon="icon: chevron-down"></a>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-            </div>
-            <div class="uk-text-center uk-padding-large">
-                <p>What are you waiting for? Get the hell out of here!</p>
-                <a href="#location" uk-icon="icon: chevron-down"></a>
-            </div>
         </section>
 
         <section id="location">
@@ -72,62 +73,69 @@
                         <div><span uk-icon="icon: location; ratio: 4"></span></div>
                         <div class="uk-padding-small"><label for="user-zip">Where are you?</label></div>
                         <div><input class="uk-input uk-form-width-small" type="text" minlength="5" name="user-zip" id="user-zip" name="user-zip" placeholder="Zip Code" /></div>
-                        <datalist id="user-zip-list">                          
-                        </datalist>
                         <p>It's about to get a whole lot hotter!</p>
                     </div>
-
-
                     <div class="uk-text-center uk-padding-large uk-margin">
                         <div><span uk-icon="icon: world; ratio: 4"></span></div>
                         <div class="uk-padding-small"><label for="">Are you ready?</label></div>
-                        <div><input type="submit" value="Let's go!" class="uk-input uk-form-width-small uk-button-secondary" /></div>
+                        <div><input type="submit" value="Let's go!" class="search-button uk-input uk-form-width-small uk-button-secondary" /></div>
                         <p>I hope you packed your sunscreen!</p>
                     </div>
                 </div>
             </form>
         </section>
 
-
-
-
-        <!-- loading wheel .uk-hidden, use js to .uk-visable on submit while loading-->
         <section id="spinner" class="uk-text-center uk-padding-large" hidden>
             <div><span uk-spinner="ratio: 4.5"></span></div>
         </section>
 
-
-        <!-- .flight-info .uk-hidden, use js to .uk-visable upon load-->
         <section id="flights" hidden>
-            <div class="flight-info uk-column-1-2@l">
-                <img src="./assets/img/photo-1568596312185-2c3e8f8042c3.jpg" alt="">
-                <div class="uk-container-center uk-padding-large">
-                    <h2>Pack your bags!</h2>
-                    <p class="location">You're headed to <span id=location-name>[city]</span>!</p>
-                    <p>The current temperature is <span id="location-temp">[temp]</span>°F</p>
-                    <button class="flight-link uk-button uk-button-secondary uk-border-rounded">Book my flight!</button>
+
+            <div class="flight-info uk-flex uk-child-width-1-2@m" uk-grid>
+                <div class="uk-card">
+                    <img src="./assets/img/photo-1568596312185-2c3e8f8042c3.jpg" alt="hot landscape">
                 </div>
+
+                <div class="uk- card uk-container-center uk-padding-large uk-margin">
+                    <h2 class="uk-heading-line uk-margin-small-left"><span>Pack your bags</span></h2>
+                    <div class="uk-text-center">
+                        <p class="location">You're headed to <span id=location-name>[city]</span>!</p>
+                        <p>The current temperature is <span id="location-temp">[temp]</span>°F</p>
+                        <button class="flight-link uk-button uk-button-secondary">Book my flight!</button>
+                    </div>
+                </div>
+
             </div>
 
             <div id="go-again" class="uk-text-center uk-padding-large">
-                <button id = "go-again-button" uk-totop></button>
-                <p>Go again?</p>
+                <button id="go-again-button" uk-totop>
+                <p>Go again?</p></button>
             </div>
+
+            <form id="flight-history">
+                <div class="uk-text-center uk-padding-large uk-margin">
+                    <div><span uk-icon="icon: bookmark; ratio: 4"></span></div>
+                    <div class="uk-padding-small"><label for="">Travel history</label></div>
+                    <p>Your last trip was to <span id="previous-location-name">[city]</span>.</p>
+                    <div><input id="book-again" type="submit" value="Take me back!" class="uk-input uk-form-width-small uk-button-secondary" /></div>
+                </div>
+            </form>
+
         </section>
 
     </main>
 
     <footer id="credits">
-        <div class="uk-tile uk-tile-muted uk-padding-large">
-            <div class="uk-text-center">
-                <h3>Brought to you by:</h3>
-            </div>
-            <div class="uk-grid-collapse uk-text-center">
-                <div><a class="uk-tile uk-padding-remove uk-text-small" href="https://github.com/flumanuck"><span class="uk-margin-small" uk-icon="icon: user"></span> Jacob Machlis</div>
 
-                <div><a class="uk-tile uk-padding-remove uk-text-small" href="https://github.com/michalakisluke"><span class="uk-margin-small" uk-icon="icon: user"></span> Luke Michalakis</div>
+        <div class="uk-card uk-background-muted uk-padding">
+            <h3 class="uk-heading-line uk-text-right uk-margin-small-left"><span>Brought to you by</span></h3>
 
-                <div><a class="uk-tile uk-padding-remove uk-text-small" href="https://github.com/sarahdickinson"><span class="uk-margin-small" uk-icon="icon: user"></span> Sarah Dickinson</div>
+            <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center" uk-grid>
+                <div class="uk-background-muted uk-small-padding"><a href="https://github.com/flumanuck"><span class="uk-margin-small" uk-icon="icon: user"></span> Jacob Machlis</div>
+
+                <div class="uk-background-muted uk-small-padding"><a href="https://github.com/michalakisluke"><span class="uk-margin-small" uk-icon="icon: user"></span> Luke Michalakis</div>
+
+                <div class="uk-background-muted uk-small-padding"><a href="https://github.com/sarahdickinson"><span class="uk-margin-small" uk-icon="icon: user"></span> Sarah Dickinson</div>
             </div>
         </div>
     </footer>
