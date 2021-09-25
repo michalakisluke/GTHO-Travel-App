@@ -52,6 +52,7 @@ $(".search-button").on("click", function(event) {
         // show spinner & hide user input upon click
         $("#spinner").removeAttr("hidden");
         $("#location").attr("hidden", true);
+        $(".down-button").attr("hidden", true);
     }
 });
 
