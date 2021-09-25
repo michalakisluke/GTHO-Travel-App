@@ -6,24 +6,61 @@ let localLong;
 let warmLatLon;
 let closeLatLon;
 let airportArrayIATA;
-var flightDate = moment().add(1, "days").format("YYYY-MM-DD");
-var returnDate = moment().add(4, "days").format("YYYY-MM-DD");
-
+let originIata;
+let destIata;
+let destCity;
+let destAirportTemp;
+let airportArrayFiltered;
+var flightDate = moment().format("YYYY-MM-DD");
+var bigAirports = [{iataCode: "ATL", city: "Atlanta"}, {iataCode: "DFW", city: "Dallas"}, {iataCode: "DEN", city: "Denver"}, {iataCode: "ORD", city: "Chicago"},
+                     {iataCode: "LAX", city: "Los Angeles"}, {iataCode: "CLT", city: "Charlotte"}, {iataCode: "LAS", city: "Las Vegas"},
+                     {iataCode: "PHX", city: "Phoenix"}, {iataCode: "MCO", city: "Orlando"}, {iataCode: "SEA", city: "Seattle"}, {iataCode: "MIA", city: "Miami"},{iataCode: "IAH", city: "Houston"},
+                     {iataCode: "JFK", city: "New York City"}, {iataCode: "FLL", city: "Fort Lauderdale"}, {iataCode: "SFO", city: "San Francisco"},
+                     {iataCode: "EWR", city: "Newark"}, {iataCode: "MSP", city: "Minneapolis"}, {iataCode: "DTW", city: "Detroit"}, {iataCode: "BOS", city: "Boston"},
+                     {iataCode: "PHL", city: "Philadelphia"}, {iataCode: "STL", city: "St. Louis"}, {iataCode: "BWI", city: "Baltimore"}, {iataCode: "TPA", city: "Tampa"},
+                     {iataCode: "SAN", city: "San Diego"}, {iataCode: "SLC", city: "Salt Lake City"}, {iataCode: "IAD", city: "Washington, D.C."}, {iataCode: "BNA", city: "Nashville"},
+                     {iataCode: "LGA", city: "New York City"}, {iataCode: "DAL", city: "Dallas"}, {iataCode: "DCA", city: "Washington, D.C."}, {iataCode: "PDX", city: "Portland"},
+                     {iataCode: "HNL", city: "Honolulu"}, {iataCode: "HOU", city: "Houston"}, {iataCode: "AUS", city: "Austin"}, {iataCode: "MDW", city: "Chicago"},
+                     {iataCode: "RSW", city: "Fort Myers"}, {iataCode: "SMF", city: "Sacramento"}, {iataCode: "MSY", city: "New Orleans"}, {iataCode: "RDU", city: "Raleigh"},
+                     {iataCode: "SJU", city: "San Juan"}, {iataCode: "SJC", city: "San Jose"}, {iataCode: "OAK", city: "Oakland"}, {iataCode: "MCI", city: "Kansas City"}, 
+                     {iataCode: "CLE", city: "Cleveland"}, {iataCode: "IND", city: "Indianapolis"}, {iataCode: "SAT", city: "San Antonio"}, {iataCode: "SNA", city: "Orange County"},
+                     {iataCode: "PIT", city: "Pittsburgh"}, {iataCode: "CVG", city: "Cincinatti"}, {iataCode: "CMH", city: "Columbus"}, {iataCode: "PBI", city: "Palm Beach"}, 
+                     {iataCode: "JAX", city: "Jacksonville"}, {iataCode: "MKE", city: "Milwaukee"}, {iataCode: "ONT", city: "Ontario"}, {iataCode: "BDL", city: "Hartford"},
+                     {iataCode: "OGC", city: "Kahului"}, {iataCode: "ANC", city: "Anchorage"}, {iataCode: "OMA", city: "Omaha"}, {iataCode: "MEM", city: "Memphis"}, 
+                     {iataCode: "RNO", city: "Reno"}];
 
 // Search button click
 $(".uk-button-secondary").on("click", function(event) {
     event.preventDefault();
     zip = $("#user-zip").val().trim();
-    if (zip === '') {
+    if (zip.length !== 5) {
+        $("#user-zip").effect("shake");
         return;
-    } else {
-        function createItem() { localStorage.setItem('zipCode', zip);}
-        createItem;
+    } 
+    else {
         localTempApiFetch();
         // show spinner & hide user input upon click
         $("#spinner").removeAttr("hidden");
         $("#location").attr("hidden", true);
     }
+});
+
+// Go to top button click
+$("#go-again-button").on("click", function(event){
+    location.reload(true);
+});
+
+// Book my flight button click
+$(".flight-link").on("click", function() {
+    for (i = 0; i < airportArrayFiltered.length; i++) {
+        if (closeLatLon["latitude"] === airportArrayFiltered[i]["latitude"] && closeLatLon["longitude"] === airportArrayFiltered[i]["longitude"]) {
+            originIata = airportArrayFiltered[i]["iataCode"];
+        }
+    }
+    destIata = localStorage.getItem("destIata");
+    originIata = originIata.toLowerCase();
+    destIata = destIata.toLowerCase();
+    window.location.href = "https://skyscanner.net/g/referrals/v1/flights/day-view?origin=" + originIata + "&destination=" + destIata + "&currency=USD"+ "&market=US" + "&outboundDate=" + flightDate;
 });
 
 //Fetch temp data for zip codes <This runs first>
@@ -37,7 +74,7 @@ function localTempApiFetch() {
             var localLat = response.coord.lat;
             var localLong = response.coord.lon;
             // Find airports within a given radius, pull lat and lon coordinates
-            fetch("https://aviation-reference-data.p.rapidapi.com/airports/search?lat=" + localLat + "&lon=" + localLong + "&radius=250", {
+            fetch("https://aviation-reference-data.p.rapidapi.com/airports/search?lat=" + localLat + "&lon=" + localLong + "&radius=1000", {
                 "method": "GET",
                 "headers": {
                     "x-rapidapi-host": "aviation-reference-data.p.rapidapi.com",
@@ -49,45 +86,15 @@ function localTempApiFetch() {
             })
             .then(function(response) {
                 airportArray = response;
-                let airportArrayClear = airportArray.filter(function(e) {
-                    return e.icaoCode != null;
+                airportArrayFiltered = airportArray.filter((el) => {
+                    return bigAirports.some((f) => {
+                        return f.iataCode === el.iataCode;
+                    });
                 });
-                var searchStr = "ahp"
-                let airportArrayNoHeli = airportArrayClear.filter(function(e) {
-                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                });
-                var searchStr = "afb"
-                let airportArrayNoAFB = airportArrayNoHeli.filter(function(e) {
-                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                });
-                var searchStr = "aaf"
-                let airportArrayNoAAF = airportArrayNoAFB.filter(function(e) {
-                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                });
-                var searchStr = "base"
-                let airportArrayNoBase = airportArrayNoAAF.filter(function(e) {
-                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                });
-                var searchStr = "executive"
-                let airportArrayNoExec = airportArrayNoBase.filter(function(e) {
-                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                });
-                var searchStr = "private"
-                let airportArrayNoPriv = airportArrayNoExec.filter(function(e) {
-                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                }); 
-                var searchStr = "regional"
-                let airportArrayNoReg = airportArrayNoPriv.filter(function(e){
-                    return !e.name.toLowerCase().includes(searchStr.toLowerCase());
-                });
-                let airportArrayCheckLat = airportArrayNoReg.filter(function(lat){
-                    return lat.latitude < localLat;
-                });
-                //console.log(airportArrayCheckLat);
-                airportArrayIATA = airportArrayCheckLat;
+                airportArrayIATA = airportArrayFiltered;
                 // Find temp at each airport
                 var promises = []
-                airportArrayCheckLat.forEach(function(coord) {
+                airportArrayFiltered.forEach(function(coord) {
                     promises.push(new Promise(function(resolve, reject) {
                         var tempLatCheck = coord.latitude;
                         var tempLonCheck = coord.longitude;
@@ -109,10 +116,10 @@ function localTempApiFetch() {
                 Promise.all(promises)
                 .then(function() {
                     chooseClosest();
-                    chooseWarmest();
-                    findTrip();
-                    $("#location").removeAttr("hidden");
+                    chooseWarmest();                    
+                    $("#flights").removeAttr("hidden");
                     $("#spinner").attr("hidden", true);
+                    writeInfo();
                 })
             })
         })
@@ -187,51 +194,23 @@ function chooseWarmest() {
     warmLatLon = {"latitude": warmestAirportLat, "longitude": warmestAirportLon};
 }
 
-
-// Flight finder & publish results on page <this runs fourth>
-function findTrip() {
-    let closestAirportIATA;
-    let warmestAirportIATA;
-    var closestData = closeLatLon;
-    var warmestData = warmLatLon;
-    airportArrayFinal = airportArrayIATA;
-    for (i = 0; i < airportArrayFinal.length; i++) {
-        if (warmestData["latitude"] === closestData["latitude"] &&  warmestData["longitude"] === closestData["longitude"]) {
-            console.log("You're already at the hottest place");
-            return;
-        }
-        else if (airportArrayFinal[i]["latitude"] === warmestData["latitude"] && airportArrayFinal[i]["longitude"] === warmestData["longitude"]) {
-            warmestAirportIATA = airportArrayFinal[i]["iataCode"];
-        }
-        else if (airportArrayFinal[i]["latitude"] === closestData["latitude"] && airportArrayFinal[i]["longitude"] === closestData["longitude"]) {
-            closestAirportIATA = airportArrayFinal[i]["iataCode"];
+function writeInfo() {
+    for (i = 0; i < airportArrayFiltered.length; i++) {
+        if (warmLatLon["latitude"] === airportArrayFiltered[i]["latitude"] && warmLatLon["longitude"] === airportArrayFiltered[i]["longitude"]) {
+            var destIata = airportArrayFiltered[i]["iataCode"];
+            localStorage.setItem("destIata", destIata);
         }
     }
-    // Fetch flights using sky scanner
-    fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/US/USD/en-US/" + closestAirportIATA + 
-    "-sky/" + warmestAirportIATA + "-sky/" + flightDate + "?inboundpartialdate=" + returnDate, {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-host": "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-            "x-rapidapi-key": "862a716dc7msh647274362d7a08cp12fe37jsn54b5d3acd3b7"
+    for (i = 0; i < bigAirports.length; i++) {
+        if (destIata === bigAirports[i]["iataCode"]) {
+            destCity = bigAirports[i]["city"];
+            localStorage.setItem("destCity", destCity);
         }
-    })
-    .then(function(response){
-        return response.json();
-    }).then(function(response){
-        console.log(response);
-    });
+    }
+
+    $("#location-name").html(destCity);
+
+    var destAirportTemp = tempCheckArray[0]["temp"];
+    $("#location-temp").html(destAirportTemp);
 }
 
-function addListEl(zip) {
-    var dataList = document.getElementById(user-zip-list)
-    var localZip = localStorage.getItem('zipCode')
-    //variable to store the options
-    var localArray = []
-    var emptyArray = []
-    var options = new Array(arrayLength = 5, [])
-    for (var i = 0; i < options.length; ++i) {
-        ///storing options in variable
-        optionInnerHtml = '<option value="' + options[i] + '" />';
-    }
-}
