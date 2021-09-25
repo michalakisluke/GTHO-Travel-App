@@ -29,6 +29,7 @@ var bigAirports = [{iataCode: "ATL", city: "Atlanta"}, {iataCode: "DFW", city: "
                      {iataCode: "OGC", city: "Kahului"}, {iataCode: "ANC", city: "Anchorage"}, {iataCode: "OMA", city: "Omaha"}, {iataCode: "MEM", city: "Memphis"}, 
                      {iataCode: "RNO", city: "Reno"}];
 
+
 // Search button click
 $(".uk-button-secondary").on("click", function(event) {
     event.preventDefault();
@@ -205,6 +206,7 @@ function writeInfo() {
         if (destIata === bigAirports[i]["iataCode"]) {
             destCity = bigAirports[i]["city"];
             localStorage.setItem("destCity", destCity);
+
         }
     }
 
