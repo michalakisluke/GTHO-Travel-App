@@ -6,12 +6,12 @@ let localLong;
 let warmLatLon;
 let closeLatLon;
 let airportArrayIATA;
+let originIata;
 let destIata;
 let destCity;
 let destAirportTemp;
 let airportArrayFiltered;
-var flightDate = moment().add(1, "days").format("YYYY-MM-DD");
-var returnDate = moment().add(4, "days").format("YYYY-MM-DD");
+var flightDate = moment().format("YYYY-MM-DD");
 var bigAirports = [{iataCode: "ATL", city: "Atlanta"}, {iataCode: "DFW", city: "Dallas"}, {iataCode: "DEN", city: "Denver"}, {iataCode: "ORD", city: "Chicago"},
                      {iataCode: "LAX", city: "Los Angeles"}, {iataCode: "CLT", city: "Charlotte"}, {iataCode: "LAS", city: "Las Vegas"},
                      {iataCode: "PHX", city: "Phoenix"}, {iataCode: "MCO", city: "Orlando"}, {iataCode: "SEA", city: "Seattle"}, {iataCode: "MIA", city: "Miami"},{iataCode: "IAH", city: "Houston"},
@@ -34,14 +34,34 @@ var bigAirports = [{iataCode: "ATL", city: "Atlanta"}, {iataCode: "DFW", city: "
 $(".uk-button-secondary").on("click", function(event) {
     event.preventDefault();
     zip = $("#user-zip").val().trim();
-    if (zip === '') {
+    if (zip.length !== 5) {
+        $("#user-zip").effect("shake");
         return;
-    } else {
+    } 
+    else {
         localTempApiFetch();
         // show spinner & hide user input upon click
         $("#spinner").removeAttr("hidden");
         $("#location").attr("hidden", true);
     }
+});
+
+// Go to top button click
+$("#go-again-button").on("click", function(event){
+    location.reload(true);
+});
+
+// Book my flight button click
+$(".flight-link").on("click", function() {
+    for (i = 0; i < airportArrayFiltered.length; i++) {
+        if (closeLatLon["latitude"] === airportArrayFiltered[i]["latitude"] && closeLatLon["longitude"] === airportArrayFiltered[i]["longitude"]) {
+            originIata = airportArrayFiltered[i]["iataCode"];
+        }
+    }
+    destIata = localStorage.getItem("destIata");
+    originIata = originIata.toLowerCase();
+    destIata = destIata.toLowerCase();
+    window.location.href = "https://skyscanner.net/g/referrals/v1/flights/day-view?origin=" + originIata + "&destination=" + destIata + "&currency=USD"+ "&market=US" + "&outboundDate=" + flightDate;
 });
 
 //Fetch temp data for zip codes <This runs first>
@@ -98,7 +118,7 @@ function localTempApiFetch() {
                 .then(function() {
                     chooseClosest();
                     chooseWarmest();
-                    findTrip();
+                    //findTrip();
                     $("#flights").removeAttr("hidden");
                     $("#spinner").attr("hidden", true);
                     writeInfo();
@@ -176,49 +196,13 @@ function chooseWarmest() {
     warmLatLon = {"latitude": warmestAirportLat, "longitude": warmestAirportLon};
 }
 
-
-// Flight finder & publish results on page <this runs fourth>
-function findTrip() {
-    let closestAirportIATA;
-    let warmestAirportIATA;
-    var closestData = closeLatLon;
-    var warmestData = warmLatLon;
-    airportArrayFinal = airportArrayIATA;
-    for (i = 0; i < airportArrayFinal.length; i++) {
-        if (warmestData["latitude"] === closestData["latitude"] &&  warmestData["longitude"] === closestData["longitude"]) {
-            console.log("You're already at the hottest place");
-            return;
-        }
-        else if (airportArrayFinal[i]["latitude"] === warmestData["latitude"] && airportArrayFinal[i]["longitude"] === warmestData["longitude"]) {
-            warmestAirportIATA = airportArrayFinal[i]["iataCode"];
-        }
-        else if (airportArrayFinal[i]["latitude"] === closestData["latitude"] && airportArrayFinal[i]["longitude"] === closestData["longitude"]) {
-            closestAirportIATA = airportArrayFinal[i]["iataCode"];
-        }
-    }
-    // Fetch flights using sky scanner
-    fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/US/USD/en-US/" + closestAirportIATA + 
-    "-sky/" + warmestAirportIATA + "-sky/" + flightDate, {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-host": "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-            "x-rapidapi-key": "862a716dc7msh647274362d7a08cp12fe37jsn54b5d3acd3b7"
-        }
-    })
-    .then(function(response){
-        return response.json();
-    }).then(function(response){
-        console.log(response);
-    });
-}
-
 function writeInfo() {
     for (i = 0; i < airportArrayFiltered.length; i++) {
         if (warmLatLon["latitude"] === airportArrayFiltered[i]["latitude"] && warmLatLon["longitude"] === airportArrayFiltered[i]["longitude"]) {
             var destIata = airportArrayFiltered[i]["iataCode"];
+            localStorage.setItem("destIata", destIata);
         }
     }
-
     for (i = 0; i < bigAirports.length; i++) {
         if (destIata === bigAirports[i]["iataCode"]) {
             destCity = bigAirports[i]["city"];
