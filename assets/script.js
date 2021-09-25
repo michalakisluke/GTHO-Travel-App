@@ -117,8 +117,7 @@ function localTempApiFetch() {
                 Promise.all(promises)
                 .then(function() {
                     chooseClosest();
-                    chooseWarmest();
-                    //findTrip();
+                    chooseWarmest();                    
                     $("#flights").removeAttr("hidden");
                     $("#spinner").attr("hidden", true);
                     writeInfo();
@@ -206,11 +205,16 @@ function writeInfo() {
     for (i = 0; i < bigAirports.length; i++) {
         if (destIata === bigAirports[i]["iataCode"]) {
             destCity = bigAirports[i]["city"];
+            localStorage.setItem("destCity", destCity);
+
         }
     }
 
     $("#location-name").html(destCity);
 
     var destAirportTemp = tempCheckArray[0]["temp"];
+    var destAirportTemp = Math.round(destAirportTemp);
     $("#location-temp").html(destAirportTemp);
+
 }
+
