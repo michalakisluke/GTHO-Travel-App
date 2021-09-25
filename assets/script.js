@@ -17,6 +17,8 @@ $(".uk-button-secondary").on("click", function(event) {
     if (zip === '') {
         return;
     } else {
+        function createItem() { localStorage.setItem('zipCode', zip);}
+        createItem;
         localTempApiFetch();
         // show spinner & hide user input upon click
         $("#spinner").removeAttr("hidden");
@@ -219,4 +221,17 @@ function findTrip() {
     }).then(function(response){
         console.log(response);
     });
+}
+
+function addListEl(zip) {
+    var dataList = document.getElementById(user-zip-list)
+    var localZip = localStorage.getItem('zipCode')
+    //variable to store the options
+    var localArray = []
+    var emptyArray = []
+    var options = new Array(arrayLength = 5, [])
+    for (var i = 0; i < options.length; ++i) {
+        ///storing options in variable
+        optionInnerHtml = '<option value="' + options[i] + '" />';
+    }
 }
