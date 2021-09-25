@@ -71,13 +71,13 @@ $(".flight-link").on("click", function() {
     originIata = originIata.toLowerCase();
     destIata = destIata.toLowerCase();
     var bookFlightURL = "https://skyscanner.net/g/referrals/v1/flights/day-view?origin=" + originIata + "&destination=" + destIata + "&currency=USD" + "&market=US" + "&outboundDate=" + flightDate;
-    window.location.href = bookFlightURL;
+    window.open(bookFlightURL, "_blank");
     localStorage.setItem("bookFlightURL", bookFlightURL);
 });
 
 // Book previous flight button click
 $("#book-again").on("click", function() {
-    localStorage.getItem("bookFlightURL", bookFlightURL);
+    bookFlightURL = localStorage.getItem("bookFlightURL");
     window.open(bookFlightURL, "_blank");
 });
 
